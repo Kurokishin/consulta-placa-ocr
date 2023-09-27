@@ -1,9 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const placaRouter = require('./src/routes/placaRouter');
 const path = require('path');
-
-const port = 3000;
 
 app.use(express.json());
 
@@ -13,6 +12,6 @@ app.use(express.static(path.join(__dirname, 'src/public')));
 // Usar o placaRouter para rota '/'
 app.use('/', placaRouter);
 
-app.listen(port, () => {
-  console.log(`Servidor está rodando na porta ${port}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Servidor está rodando');
 });
