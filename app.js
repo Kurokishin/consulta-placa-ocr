@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const placaRouter = require('./src/routers/placaRouter');
+const placaRouter = require('./src/routes/placaRouter');
 const path = require('path');
 
 const port = 3000;
