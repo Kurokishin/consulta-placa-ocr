@@ -37,20 +37,39 @@ placaRouter.post('/cadastroPlaca', upload.single('file'), async (req, res) => {
     const cidade = req.body.cidade;
     //console.log(cidade)
 
-    const result = await tesseract.recognize(
+    // const result = await tesseract.recognize(
+    //   `src/uploads/${req.file.filename}`,
+    //   'por', // idioma de reconhecimento (pode ser ajustado)
+    //   { logger: m => console.log(m) }
+    // ).then(({ data: { text } }) => {
+    //   console.log(text);
+    // })
+    //console.log('resultado do ocr:', result.data.text)
+    //console.log(result)
+    const { data } = await tesseract.recognize(
       `src/uploads/${req.file.filename}`,
-      'eng', // idioma de reconhecimento (pode ser ajustado)
+      'por', // idioma de reconhecimento
       { logger: m => console.log(m) }
     );
-    console.log(result)
+    
+    if (data && data.text) {
+      const text = data.text.trim();
+      console.log('Resultado do OCR:', text);
+  
+      const numeroPlaca = text;
 
-    const numeroPlaca = result.data.text.trim();
+      // Armazenar a data e hora atual
+      const dataHora = new Date();
 
-    // Armazenar a data e hora atual
-    const dataHora = new Date();
+      // Criar e salvar o documento no MongoDB
+      await placaSchema.create({ numeroPlaca, cidade, dataHora });
+  
+      // Continuar com o processamento, armazenamento no banco de dados, etc.
+    } else {
+      console.error('Nenhum texto reconhecido pelo OCR.');
+    }
 
-    // Criar e salvar o documento no MongoDB
-    await placaSchema.create({ numeroPlaca, cidade, dataHora });
+    //const numeroPlaca = result.data.text.trim();
 
     res.json({mensagem: 'Cadastro realizado'});
   } catch (error) {
