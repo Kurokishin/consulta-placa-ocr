@@ -1,50 +1,70 @@
+require('dotenv').config();
+const placaRouter = require('express').Router();
 const express = require('express');
-const router = express.Router();
+const db = require('mongoose');
 const multer = require('multer');
+//const upload = multer({dest: 'uploads/'});
 const tesseract = require('tesseract.js');
-const Placa = require('../models/placa');
 const pdf = require('pdf-creator-node');
 const fs = require('fs');
+const placaSchema = require('../models/placaSchema');
 
 // Configurar o multer para lidar com uploads de imagens
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
 const upload = multer({ storage: storage });
 
 // Rota POST para cadastrar placas
-router.post('/cadastroPlaca', upload.single('image'), async (req, res) => {
+placaRouter.post('/cadastroPlaca', upload.single('file'), async (req, res) => {
   try {
-    // Verifique se a extensão do arquivo é PNG
+    await db.connect(process.env.DB_CONNECTION)
+      .then(() => console.log('Connected!'));
+    await placaSchema.create({numeroPlaca: numeroPlaca, cidade: cidade});
+
     if (!req.file || req.file.mimetype !== 'image/png') {
-      return res.status(400).json({ message: 'A imagem deve estar no formato PNG' });
+      return res.json({error: true, mensagem: 'A imagem deve estar no formato PNG'});
     }
 
-    // Realize o reconhecimento de caracteres (OCR) na imagem
-    const { data: { text } } = await tesseract.recognize(req.file.buffer, 'eng');
-    const numeroPlaca = text.trim();
-    const cidade = req.body.city;
+    //await placaSchema.save();
+    //console.log(req.file, req.body);
 
-    // Crie uma nova instância de Placa e salve-a no MongoDB
-    const novaPlaca = new Placa({
-      numeroPlaca: numeroPlaca,
-      cidade: cidade,
-    });
+    const {cidade} = req.body;
 
-    await novaPlaca.save();
+    const result = await tesseract.recognize(
+      `uploads/${req.file.filename}`,
+      'eng', // idioma de reconhecimento (pode ser ajustado)
+      { logger: m => console.log(m) }
+    );
+    console.log(result)
 
-    res.status(201).json({ message: 'Placa cadastrada com sucesso' });
+    const numeroPlaca = result.data.text.trim();
+
+    // Armazenar a data e hora atual
+    const dataHora = new Date();
+
+    // Criar e salvar o documento no MongoDB
+    await placaSchema.create({ numeroPlaca, cidade, dataHora });
+
+    res.json({mensagem: 'Cadastro realizado'});
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erro ao cadastrar a placa' });
+    res.json({error: true, mensagem: 'Erro durante o cadastro'});
   }
 });
 
 // Rota GET para gerar um PDF de relatório com base na cidade
-router.get('/relatorio/cidade/:cidade', async (req, res) => {
+placaRouter.get('/relatorio/cidade/:cidade', async (req, res) => {
   try {
     const cidade = req.params.cidade;
 
     // Consulte o MongoDB para obter registros com a cidade especificada
-    const placas = await Placa.find({ cidade: cidade });
+    const placas = await placaSchema.find({ cidade: cidade });
 
     // Crie um objeto de opções para o PDF
     const options = {
@@ -116,4 +136,4 @@ router.get('/relatorio/cidade/:cidade', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = placaRouter;
