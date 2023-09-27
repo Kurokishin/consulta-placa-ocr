@@ -1,6 +1,5 @@
 require('dotenv').config();
 const placaRouter = require('express').Router();
-const express = require('express');
 const db = require('mongoose');
 const multer = require('multer');
 //const upload = multer({dest: 'uploads/'});
@@ -26,7 +25,7 @@ placaRouter.post('/cadastroPlaca', upload.single('file'), async (req, res) => {
   try {
     await db.connect(process.env.DB_CONNECTION)
       .then(() => console.log('Connected!'));
-    await placaSchema.create({numeroPlaca: numeroPlaca, cidade: cidade});
+    //await placaSchema.create({numeroPlaca: numeroPlaca, cidade: cidade});
 
     if (!req.file || req.file.mimetype !== 'image/png') {
       return res.json({error: true, mensagem: 'A imagem deve estar no formato PNG'});
@@ -35,10 +34,11 @@ placaRouter.post('/cadastroPlaca', upload.single('file'), async (req, res) => {
     //await placaSchema.save();
     //console.log(req.file, req.body);
 
-    const {cidade} = req.body;
+    const cidade = req.body.cidade;
+    //console.log(cidade)
 
     const result = await tesseract.recognize(
-      `uploads/${req.file.filename}`,
+      `src/uploads/${req.file.filename}`,
       'eng', // idioma de reconhecimento (pode ser ajustado)
       { logger: m => console.log(m) }
     );
@@ -54,6 +54,7 @@ placaRouter.post('/cadastroPlaca', upload.single('file'), async (req, res) => {
 
     res.json({mensagem: 'Cadastro realizado'});
   } catch (error) {
+    console.error(error)
     res.json({error: true, mensagem: 'Erro durante o cadastro'});
   }
 });
