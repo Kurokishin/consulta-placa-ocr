@@ -2,10 +2,8 @@ require('dotenv').config();
 const placaRouter = require('express').Router();
 const db = require('mongoose');
 const multer = require('multer');
-//const upload = multer({dest: 'uploads/'});
 const tesseract = require('tesseract.js');
-const pdf = require('pdf-creator-node');
-const fs = require('fs');
+const PDFDocument = require("pdfkit");
 const placaSchema = require('../models/placaSchema');
 
 // Configurar o multer para lidar com uploads de imagens
@@ -23,6 +21,8 @@ const upload = multer({ storage: storage });
 // Rota POST para cadastrar placas
 placaRouter.post('/cadastroPlaca', upload.single('file'), async (req, res) => {
   try {
+
+    // Conexão com banco de dados
     await db.connect(process.env.DB_CONNECTION)
       .then(() => console.log('Connected!'));
     //await placaSchema.create({numeroPlaca: numeroPlaca, cidade: cidade});
@@ -81,78 +81,46 @@ placaRouter.post('/cadastroPlaca', upload.single('file'), async (req, res) => {
 // Rota GET para gerar um PDF de relatório com base na cidade
 placaRouter.get('/relatorio/cidade/:cidade', async (req, res) => {
   try {
+
+    // Conexão com banco de dados
+    await db.connect(process.env.DB_CONNECTION)
+      .then(() => console.log('Connected!'));
+
     const cidade = req.params.cidade;
 
-    // Consulte o MongoDB para obter registros com a cidade especificada
+    // Consulta o MongoDB para obter registros com a cidade especificada
     const placas = await placaSchema.find({ cidade: cidade });
 
-    // Crie um objeto de opções para o PDF
-    const options = {
-      format: 'A4',
-      orientation: 'portrait',
-      border: '10mm',
-      header: {
-        height: '10mm',
-      },
-      footer: {
-        height: '10mm',
-      },
-    };
+    // Cria um novo documento PDF
+    const doc = new PDFDocument();
 
-    // Defina o caminho do modelo HTML para o relatório
-    const htmlTemplate = `
-      <html>
-        <head>
-          <title>Relatório de Placas</title>
-        </head>
-        <body>
-          <h1>Relatório de Placas - Cidade: ${cidade}</h1>
-          <table>
-            <thead>
-              <tr>
-                <th>Número da Placa</th>
-                <th>Data e Hora</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each placas}}
-              <tr>
-                <td>{{this.numeroPlaca}}</td>
-                <td>{{this.createdAt}}</td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </body>
-      </html>
-    `;
+    // Define o tipo de conteúdo do cabeçalho da resposta HTTP
+    res.setHeader('Content-Type', 'application/pdf');
 
-    // Defina os dados a serem passados para o modelo HTML
-    const data = {
-      placas: placas,
-    };
+    // Define o cabeçalho Content-Disposition para que o navegador solicite o download
+    res.setHeader('Content-Disposition', `attachment; filename="relatorio_${cidade}.pdf"`);
 
-    // Crie o PDF usando pdf-creator-node
-    const document = {
-      html: htmlTemplate,
-      data: data,
-      path: './relatorio.pdf',
-      type: '',
-    };
+    // Encaminha o PDF diretamente para a resposta HTTP
+    doc.pipe(res);
 
-    pdf
-      .create(document, options)
-      .then((result) => {
-        console.log(result);
-        res.sendFile('relatorio.pdf', { root: '.' });
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).json({ message: 'Erro ao gerar o relatório em PDF' });
-      });
+    // Cabeçalho do PDF
+    doc.fontSize(14).text("Relatório de Placas", { align: "center" });
+    doc.fontSize(12).text(`Cidade: ${cidade}`, { align: "left" });
+    doc.moveDown(0.5);
+
+    // Corpo do arquivo
+    placas.forEach((placa) => {
+      doc.text(`Número da placa: ${placa.numeroPlaca}`);
+      doc.text(`Data e hora: ${placa.dataHora.toLocaleString('pt-BR')}`);
+      doc.moveDown(0.5);
+    });
+
+    // Finaliza o documento
+    doc.end();
+    //res.json({mensagem: 'PDF gerado com sucesso!'});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Erro ao gerar o relatório em PDF' });
+    res.status(500).json({ mensagem: 'Erro ao gerar o relatório em PDF' });
   }
 });
 
