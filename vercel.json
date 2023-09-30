@@ -13,7 +13,7 @@
           },
         {
             "src": "/cadastroPlaca",
-            "dest": "/index.js"
+            "dest": "/src/routes/placaRouter.js"
           },
         {
             "src": "/(.*)",
