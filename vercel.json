@@ -8,6 +8,10 @@
     ],
     "routes": [
         {
+            "src": "/cadastroPlaca",
+            "dest": "/src/routes/placaRouter.js"
+          },
+        {
             "src": "/(.*)",
             "dest": "/src/public/$1"
         }
