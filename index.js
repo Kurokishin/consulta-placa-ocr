@@ -15,10 +15,10 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'src/public')));
 
 // Usar o placaRouter para rota '/'
-app.use('/', cadastroPlacaRouter);
-app.use('/', relatorioPlacaRouter);
-app.use('/', consultaPlacaRoute);
 app.use('/', homepageRoute);
+app.use('/cadastroPlaca', cadastroPlacaRouter);
+//app.use('/', relatorioPlacaRouter);
+//app.use('/', consultaPlacaRoute);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
