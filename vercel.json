@@ -1,5 +1,5 @@
 {
     "rewrites": [
-      { "source": "/cadastroPlaca", "destination": "/" }
+      { "source": "/", "destination": "/src/public/index.html" }
     ]
 }
