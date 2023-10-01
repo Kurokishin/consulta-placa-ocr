@@ -1,24 +1,5 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "index.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/src/public/(.*)",
-            "dest": "/src/public/$1"
-          },
-        {
-            "src": "/cadastroPlaca",
-            "dest": "/src/routes/placaRouter.js"
-          },
-        {
-            "src": "/(.*)",
-            "dest": "/src/public/$1"
-        }
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/" }
     ]
   }
-  
