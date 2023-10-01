@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'src/public')));
 
 // Usar o placaRouter para rota '/'
 app.use('/', homepageRoute);
-app.use('/cadastroPlaca', cadastroPlacaRouter);
+app.use('/', cadastroPlacaRouter);
 //app.use('/', relatorioPlacaRouter);
 //app.use('/', consultaPlacaRoute);
 
