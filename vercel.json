@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/cadastroPlaca",
+      "dest": "/src/routes/cadastroPlacaRoute.js"
+    },
+    {
+      "src": "/consultaPlaca",
+      "dest": "/src/routes/consultaPlacaRoute.js"
+    },
+    {
+      "src": "/relatorioPlaca",
+      "dest": "/src/routes/relatorioPlacaRoute.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/src/routes/homepageRoute.js"
+    }
+  ]
+}
