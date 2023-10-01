@@ -1,5 +1,13 @@
 {
     "rewrites": [
-      { "source": "/", "destination": "/index.html" }
+      {
+        "source": "/cadastroPlaca",
+        "destination": "/src/routes/cadastroPlacaRoute.js"
+      },
+      {
+        "source": "/(.*)",
+        "destination": "/src/routes/homepageRoute.js"
+      }
     ]
-}
+  }
+  
