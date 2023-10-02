@@ -1,12 +1,3 @@
 {
-  "cidades": [
-    {
-      "cidade": "Crato",
-      "id": "51383bde-7b86-4197-a07c-3ff8d8af717e"
-    },
-    {
-      "cidade": "Juazeiro do Norte",
-      "id": "9538328f-f4c4-440c-baf0-ea10157d1e23"
-    }
-  ]
+  "cidades": []
 }
