@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 const CadastroPlaca = () => {
   const [file, setFile] = useState(null);
   const [cidade, setCidade] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const { data, setData, saveData } = useSaveData(
     "http://localhost:3000/cidades"
@@ -30,6 +31,7 @@ const CadastroPlaca = () => {
           formData
         );
         console.log(response.data);
+        setIsSubmitted(true);
         resolve(response.data);
       } catch (error) {
         console.error("Erro durante o cadastro:", error);
