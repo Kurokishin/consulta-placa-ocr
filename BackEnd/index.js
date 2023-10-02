@@ -6,7 +6,7 @@ const relatorioPlacaRouter = require("./src/routes/relatorioPlacaRoute");
 const cadastroPlacaRouter = require("./src/routes/cadastroPlacaRoute");
 const path = require("path");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 
