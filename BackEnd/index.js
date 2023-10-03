@@ -26,5 +26,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log("Servidor está rodando");
+  console.log(`Servidor está rodando na porta ${PORT}`);
 });
