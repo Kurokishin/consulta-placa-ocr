@@ -8,7 +8,9 @@ import { v4 as uuidv4 } from "uuid";
 const CadastroPlaca = () => {
   const [file, setFile] = useState(null);
   const [cidade, setCidade] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [message, setMenssage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [isCadastroSucesso, setIsCadastroSucesso] = useState(false);
 
   const { data, setData, saveData } = useSaveData(
     "http://localhost:3000/cidades"
@@ -30,8 +32,6 @@ const CadastroPlaca = () => {
           "http://localhost:3001/cadastroPlaca",
           formData
         );
-        console.log(response.data);
-        setIsSubmitted(true);
         resolve(response.data);
       } catch (error) {
         console.error("Erro durante o cadastro:", error);
@@ -44,8 +44,18 @@ const CadastroPlaca = () => {
     e.preventDefault();
     try {
       await handleSubmit();
+      setIsError(false); // Não é um erro
+      setMenssage("Cadastro realizado com sucesso");
+      setIsCadastroSucesso(true); // Ativa os botões
+      setTimeout(() => {
+        setMenssage(""); // Limpa a mensagem após 5 segundos
+      }, 5000);
     } catch (error) {
-      console.error("Erro durante o cadastro:", error);
+      setIsError(true); // É um erro
+      setMenssage("Erro durante o cadastro");
+      setTimeout(() => {
+        setMenssage(""); // Limpa a mensagem após 5 segundos
+      }, 5000);
     } finally {
       saveData();
     }
@@ -53,9 +63,13 @@ const CadastroPlaca = () => {
 
   return (
     <div className={Styles.body}>
+      <div className={isError ? Styles.error_message : Styles.message}>
+        <p>{message}</p>
+      </div>
       <h1>Envio de Placa</h1>
+      <br></br>
       <form onSubmit={combinedFormSubmissionHandler}>
-        <label for="file">Imagem da Placa (PNG apenas):</label>
+        <label htmlFor="file">Imagem da Placa (PNG apenas):</label>
         <input
           type="file"
           accept="image/png"
@@ -63,20 +77,22 @@ const CadastroPlaca = () => {
         />
         <br />
 
-        <label for="cidade">Nome da Cidade:</label>
+        <label htmlFor="cidade">Nome da Cidade:</label>
         <input type="text" value={cidade} onChange={combinedJobChangeHandler} />
         <br />
 
-        <button type="submit">Enviar</button>
+        <div className={Styles.buttons}>
+          <button type="submit">Enviar</button>
+        </div>
       </form>
 
       <div className={Styles.containerButtons}>
         <Link to={"/consulta"}>
-          <button>Consultar Placas</button>
+          <button disabled={!isCadastroSucesso}>Consultar Placas</button>
         </Link>
 
         <Link to={"/relatorio"}>
-          <button>Relatorio Placas</button>
+          <button disabled={!isCadastroSucesso}>Relatorio Placas</button>
         </Link>
       </div>
     </div>

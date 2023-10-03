@@ -1,9 +1,5 @@
 /* Reset de estilos para o corpo da página */
-body,
-h1,
-form,
-label,
-input {
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -63,6 +59,9 @@ button {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  height: 2rem;
+  width: 10rem;
+  font-size: 1rem;
   /* Efeito de transição */
 }
 
@@ -70,6 +69,7 @@ button {
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 input[type="submit"]:hover,
@@ -95,6 +95,14 @@ select {
   font-size: 1.1rem;
   border-radius: 1rem;
   height: 2rem;
+}
+
+.buttons {
+  display: flex;
+  column-gap: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
 }
 /* Estilos para mensagens de erro, se necessário */
 .error-message {

@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import Styles from "../Relatorio-Placa/styles.module.css";
 
 const RelatorioPlaca = () => {
   const [data, setData] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(""); // Adicione um estado para a cidade selecionada
+  const [selectedCity, setSelectedCity] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3000/cidades")
       .then((response) => response.json())
-      .then((data) => setData(data))
+      .then((data) => {
+        setData(data);
+        setSelectedCity(data[0]?.cidade);
+      })
       .catch((error) => console.error(error));
   }, []);
 
@@ -19,11 +23,10 @@ const RelatorioPlaca = () => {
   };
 
   const handleButtonClick = () => {
-    fetch(`http://localhost:3001/relatorio/cidade/${selectedCity}`)
-      .then((response) => response.json())
-      .then((data) => {
-        // Faça algo com os dados recebidos
-      });
+    window.open(
+      `http://localhost:3001/relatorio/cidade/${selectedCity}`,
+      "_blank"
+    );
   };
 
   return (
@@ -39,9 +42,16 @@ const RelatorioPlaca = () => {
           ))}
         </select>
         <br></br>
-        <button type="submit" onClick={handleButtonClick}>
-          Gerar Relatório
-        </button>
+
+        <div className={Styles.buttons}>
+          <button type="submit" onClick={handleButtonClick}>
+            Gerar Relatório
+          </button>
+
+          <Link to={"/"}>
+            <button>Voltar</button>
+          </Link>
+        </div>
       </div>
     </div>
   );

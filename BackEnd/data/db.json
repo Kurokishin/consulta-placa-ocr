@@ -1,12 +1,3 @@
 {
-  "cidades": [
-    {
-      "cidade": "teste",
-      "id": "dae2287e-7ec7-4e95-a5e0-2fa5f9551ead"
-    },
-    {
-      "cidade": "Crato",
-      "id": "a60e03a1-2dc4-4798-b7f7-e26132a82632"
-    }
-  ]
+  "cidades": []
 }
