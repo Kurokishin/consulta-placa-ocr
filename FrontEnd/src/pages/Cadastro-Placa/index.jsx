@@ -82,11 +82,14 @@ const CadastroPlaca = () => {
 
       <div className={Styles.containerButtons}>
         <Link to={"/consulta"}>
-          <button disabled={!isCadastroSucesso}>Consultar Placas</button>
+          <button>Consultar Placas</button>
         </Link>
 
-        <Link to={"/relatorio"}>
-          <button disabled={!isCadastroSucesso}>Relatorio Placas</button>
+        <Link
+          to={"/relatorio"}
+          className={isCadastroSucesso ? Styles.block : Styles.none}
+        >
+          <button>Relatorio Placas</button>
         </Link>
       </div>
     </div>

@@ -80,7 +80,7 @@ button {
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  align-items: center;
 }
 
 input[type="submit"]:hover,
@@ -117,4 +117,13 @@ input[type="submit"]:active {
   /* Espaçamento superior para separar das entradas */
   text-align: center;
   /* Centralize as mensagens de erro */
+}
+
+.none {
+  display: none;
+}
+
+.block {
+  display: block;
+  text-decoration: none;
 }
