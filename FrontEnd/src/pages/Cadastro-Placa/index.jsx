@@ -47,15 +47,9 @@ const CadastroPlaca = () => {
       setIsError(false); // Não é um erro
       setMenssage("Cadastro realizado com sucesso");
       setIsCadastroSucesso(true); // Ativa os botões
-      setTimeout(() => {
-        setMenssage(""); // Limpa a mensagem após 5 segundos
-      }, 5000);
     } catch (error) {
       setIsError(true); // É um erro
       setMenssage("Erro durante o cadastro");
-      setTimeout(() => {
-        setMenssage(""); // Limpa a mensagem após 5 segundos
-      }, 5000);
     } finally {
       saveData();
     }
