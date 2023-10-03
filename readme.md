@@ -58,13 +58,30 @@ O frontend é a interface de usuário que interage com o backend. Ele oferece as
 
 - **Consulta de Placa**: Uma tela para verificar se uma placa está registrada no sistema.
 
-## Imagens:
+## Imagens da interface:
 
-<div align="center">
-  <img src="img/image.png" alt="1">
-</div>
+<p align="center">
+  <img src="https://github.com/Kurokishin/consulta-placa-ocr/assets/80788425/d5f81cbb-af13-4ecf-a86c-b74c9dd4666a" />
+</p>
 
-<div align="center">
-  <img src="img/image01.png" alt="2">
-</div>
+<p align="center">
+  <img src="https://github.com/Kurokishin/consulta-placa-ocr/assets/80788425/9149d818-50e7-4432-9c4e-ed55efb46ea3" />
+</p>
 
+
+## Instruções para rodar o projeto localmente:
+
+1. Abrir dois terminais (um com acesso a pasta FrontEnd e outro a pasta BackEnd) e instalar as dependências de ambos com o comando:
+
+```js
+npm install
+```
+
+2. Então, para executar o projeto basta utilizar o comando *(tanto no front quanto no back)*:
+
+```js
+npm run dev
+```
+
+3. No terminal em que a parte do FrontEnd foi executada estará a porta onde o html está disponível para acesso.
+![terminal executando o projeto](https://github.com/Kurokishin/consulta-placa-ocr/assets/80788425/df5c78cc-8c4b-4f90-b43b-9439d9251002)
