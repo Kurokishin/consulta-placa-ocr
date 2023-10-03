@@ -69,7 +69,9 @@ O frontend é a interface de usuário que interage com o backend. Ele oferece as
 </p>
 
 
-## Instruções para rodar o projeto localmente:
+## Instruções para rodar o projeto localmente
+
+### Requisições pelo frontend:
 
 1. Abrir dois terminais (um com acesso a pasta FrontEnd e outro a pasta BackEnd) e instalar as dependências de ambos com o comando:
 
@@ -85,3 +87,20 @@ npm run dev
 
 3. No terminal em que a parte do FrontEnd foi executada estará a porta onde o html está disponível para acesso.
 ![terminal executando o projeto](https://github.com/Kurokishin/consulta-placa-ocr/assets/80788425/df5c78cc-8c4b-4f90-b43b-9439d9251002)
+
+### Requisições pelo backend:
+
+* Para a requisição POST de cadastrar a placa (somente imagens em PNG)
+   ```sh
+   curl -X POST -F "file=@/caminho/para/imagem.png" -F "cidade=<nome_cidade>" localhost:3001/cadastroPlaca
+   ```
+
+* Documento com as placas cadastradas de uma determinada cidade (será feito o download do PDF)
+   ```sh
+   curl -o <nome_do_arquivo>.pdf localhost:3001/relatorio/cidade/:cidade
+   ```
+
+* Para verificar se uma placa está presente no banco de dados
+   ```sh
+   curl localhost:3001/consulta/:placa
+   ```
