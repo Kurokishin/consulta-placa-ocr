@@ -1,9 +1,5 @@
 /* Reset de estilos para o corpo da página */
-body,
-h1,
-form,
-label,
-input {
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -36,6 +32,7 @@ h1 {
 }
 
 /* Estilos para o formulário */
+
 form {
   display: flex;
   max-width: 400px;
@@ -44,6 +41,7 @@ form {
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   flex-direction: column;
+  align-items: center;
 }
 
 label {
@@ -72,10 +70,17 @@ button {
   /* Efeito de transição */
 }
 
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
 .containerButtons {
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 input[type="submit"]:hover,
@@ -96,8 +101,17 @@ input[type="submit"]:active {
 }
 
 /* Estilos para mensagens de erro, se necessário */
-.error-message {
+.error_message {
   color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  /* Espaçamento superior para separar das entradas */
+  text-align: center;
+  /* Centralize as mensagens de erro */
+}
+
+.message {
+  color: green;
   font-size: 14px;
   margin-top: 10px;
   /* Espaçamento superior para separar das entradas */
