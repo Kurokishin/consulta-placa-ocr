@@ -47,15 +47,9 @@ const CadastroPlaca = () => {
       setIsError(false); // Não é um erro
       setMenssage("Cadastro realizado com sucesso");
       setIsCadastroSucesso(true); // Ativa os botões
-      setTimeout(() => {
-        setMenssage(""); // Limpa a mensagem após 5 segundos
-      }, 5000);
     } catch (error) {
       setIsError(true); // É um erro
       setMenssage("Erro durante o cadastro");
-      setTimeout(() => {
-        setMenssage(""); // Limpa a mensagem após 5 segundos
-      }, 5000);
     } finally {
       saveData();
     }
@@ -88,11 +82,14 @@ const CadastroPlaca = () => {
 
       <div className={Styles.containerButtons}>
         <Link to={"/consulta"}>
-          <button disabled={!isCadastroSucesso}>Consultar Placas</button>
+          <button>Consultar Placas</button>
         </Link>
 
-        <Link to={"/relatorio"}>
-          <button disabled={!isCadastroSucesso}>Relatorio Placas</button>
+        <Link
+          to={"/relatorio"}
+          className={isCadastroSucesso ? Styles.block : Styles.none}
+        >
+          <button>Relatorio Placas</button>
         </Link>
       </div>
     </div>

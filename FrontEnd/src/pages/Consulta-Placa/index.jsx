@@ -1,22 +1,25 @@
-import { useState } from 'react';
-import axios from 'axios';
-import styles from '../Consulta-Placa/styles.module.css'; // Importando os estilos
+import { useState } from "react";
+import axios from "axios";
+import styles from "../Consulta-Placa/styles.module.css";
+import { Link } from "react-router-dom";
 
 function ConsultaPlaca() {
-  const [placa, setPlaca] = useState('');
-  const [mensagem, setMensagem] = useState('');
+  const [placa, setPlaca] = useState("");
+  const [mensagem, setMensagem] = useState("");
   const [existe, setExiste] = useState(null);
 
   const consultarPlaca = async () => {
     try {
-      const response = await axios.get(`/consulta/${placa}`);
+      const response = await axios.get(
+        `http://localhost:3001/consulta/${placa}`
+      );
       const { mensagem, existe } = response.data;
 
       setMensagem(mensagem);
       setExiste(existe);
     } catch (error) {
       console.error(error);
-      setMensagem('Erro ao consultar a placa');
+      setMensagem("Erro ao consultar a placa");
       setExiste(false);
     }
   };
@@ -31,11 +34,19 @@ function ConsultaPlaca() {
           value={placa}
           onChange={(e) => setPlaca(e.target.value)}
         />
-        <button onClick={consultarPlaca}>Consultar</button>
+        <div>
+          <button onClick={consultarPlaca}>Consultar</button>
+
+          <Link to={"/"}>
+            <button className={styles.buttons}>Voltar</button>
+          </Link>
+        </div>
       </div>
-      {mensagem && <p>{mensagem}</p>}
+
       {existe !== null && (
-        <p>A placa {existe ? 'existe' : 'não existe'} no banco de dados</p>
+        <p className={existe ? styles.message : styles.error_message}>
+          A placa {existe ? "existe" : "não existe"} no banco de dados
+        </p>
       )}
     </div>
   );

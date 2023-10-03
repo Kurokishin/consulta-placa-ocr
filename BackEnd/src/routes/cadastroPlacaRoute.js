@@ -21,7 +21,6 @@ const upload = multer({ storage: storage });
 db.connect(process.env.DB_CONNECTION)
   .then(() => console.log("Connected!"))
   .catch((error) => console.error("Failed to connect to the database:", error));
-
 // Rota POST para cadastrar placas
 cadastroPlacaRouter.post(
   "/cadastroPlaca",
