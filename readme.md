@@ -19,7 +19,7 @@ Este é o README para o projeto que envolve a criação de um sistema de reconhe
    - **[x]** Telas para cada uma das rotas do backend.
 - **[ ]** Vercel:
    - **[x]** Adição da homepage
-   - **[ ]** Realizar requisição para cadastrar uma placa
+   - **[ ]** (ERRO CORS) Realizar requisição para cadastrar uma placa
 
 
 ## Tecnologias Utilizadas
