@@ -1,17 +1,15 @@
-require("dotenv").config();
 const cadastroCredencialRouter = require("express").Router();
-const db = require("mongoose");
 const bcrypt = require('bcrypt');
 const credencialSchema = require("../models/credencialSchema");
-
-// Conexão com banco de dados
-db.connect(process.env.DB_CONNECTION)
-  .then(() => console.log("Connected to the database!"))
-  .catch((error) => console.error("Failed to connect to the database:", error));
+const connectDatabase = require("../utils/connectDatabase");
 
   // Rota POST para cadastrar as credenciais
 cadastroCredencialRouter.post('/cadastro', async (req, res) => {
     try {
+
+        // Conexão com banco de dados
+        connectDatabase();
+
         const { email, password } = req.body;
 
         // Configura e criptografa a senha do usuário

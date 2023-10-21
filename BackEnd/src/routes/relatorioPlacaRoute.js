@@ -1,16 +1,14 @@
-require("dotenv").config();
 const relatorioPlacaRouter = require("express").Router();
-const db = require("mongoose");
 const PDFDocument = require("pdfkit");
 const placaSchema = require("../models/placaSchema");
+const connectDatabase = require("../utils/connectDatabase");
 
-db.connect(process.env.DB_CONNECTION)
-  .then(() => console.log("Connected!"))
-  .catch((error) => console.error("Failed to connect to the database:", error));
 
 relatorioPlacaRouter.get("/relatorio/cidade/:cidade", async (req, res) => {
   try {
+    
     // Conexão com banco de dados
+    connectDatabase();
 
     const cidade = req.params.cidade;
 

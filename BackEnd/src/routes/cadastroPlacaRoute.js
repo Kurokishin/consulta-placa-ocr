@@ -1,9 +1,8 @@
-require("dotenv").config();
 const cadastroPlacaRouter = require("express").Router();
-const db = require("mongoose");
 const multer = require("multer");
 const tesseract = require("tesseract.js");
 const placaSchema = require("../models/placaSchema");
+const connectDatabase = require("../utils/connectDatabase");
 
 // Configurar o multer para lidar com uploads de imagens
 const storage = multer.diskStorage({
@@ -18,9 +17,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Conexão com banco de dados
-db.connect(process.env.DB_CONNECTION)
-  .then(() => console.log("Connected!"))
-  .catch((error) => console.error("Failed to connect to the database:", error));
+connectDatabase();
+
 // Rota POST para cadastrar placas
 cadastroPlacaRouter.post(
   "/cadastroPlaca",
