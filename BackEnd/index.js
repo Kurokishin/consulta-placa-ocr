@@ -5,6 +5,7 @@ const consultaPlacaRoute = require("./src/routes/consultaPlacaRoute");
 const relatorioPlacaRoute = require("./src/routes/relatorioPlacaRoute");
 const cadastroPlacaRoute = require("./src/routes/cadastroPlacaRoute");
 const cadastroCredencialRoute = require("./src/routes/cadastroCredencialRoute");
+const loginRoute = require("./src/routes/loginRoute");
 const path = require("path");
 const cors = require("cors");
 
@@ -21,6 +22,7 @@ app.use("/", cadastroPlacaRoute);
 app.use("/", relatorioPlacaRoute);
 app.use("/", consultaPlacaRoute);
 app.use("/", cadastroCredencialRoute);
+app.use("/", loginRoute);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
