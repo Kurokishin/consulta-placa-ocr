@@ -4,6 +4,7 @@ const app = express();
 const consultaPlacaRoute = require("./src/routes/consultaPlacaRoute");
 const relatorioPlacaRouter = require("./src/routes/relatorioPlacaRoute");
 const cadastroPlacaRouter = require("./src/routes/cadastroPlacaRoute");
+const cadastroCredencialRouter = require("./src/routes/cadastroCredencial");
 const path = require("path");
 const cors = require("cors");
 
@@ -19,6 +20,7 @@ app.use(express.static(path.join(__dirname, "src/public")));
 app.use("/", cadastroPlacaRouter);
 app.use("/", relatorioPlacaRouter);
 app.use("/", consultaPlacaRoute);
+app.use("/", cadastroCredencialRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
