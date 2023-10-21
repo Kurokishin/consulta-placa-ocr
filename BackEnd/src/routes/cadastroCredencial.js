@@ -9,11 +9,12 @@ db.connect(process.env.DB_CONNECTION)
   .then(() => console.log("Connected to the database!"))
   .catch((error) => console.error("Failed to connect to the database:", error));
 
-  // Rota POST para cadastrar placas
+  // Rota POST para cadastrar as credenciais
 cadastroCredencialRouter.post('/cadastro', async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Configura e criptografa a senha do usuário
         const saltRounds = 10;
         const salt = bcrypt.genSaltSync(saltRounds);
         const hashedPassword = bcrypt.hashSync(password, salt);
