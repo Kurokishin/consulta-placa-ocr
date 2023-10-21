@@ -3,7 +3,7 @@ const PDFDocument = require("pdfkit");
 const placaSchema = require("../models/placaSchema");
 const connectDatabase = require("../utils/connectDatabase");
 
-
+// Rota para verificar placas cadastradas de uma determinada cidade
 relatorioPlacaRouter.get("/relatorio/cidade/:cidade", async (req, res) => {
   try {
     

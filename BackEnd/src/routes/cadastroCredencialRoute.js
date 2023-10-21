@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const credencialSchema = require("../models/credencialSchema");
 const connectDatabase = require("../utils/connectDatabase");
 
-  // Rota POST para cadastrar as credenciais
+// Rota POST para cadastrar as credenciais
 cadastroCredencialRouter.post('/cadastro', async (req, res) => {
     try {
 

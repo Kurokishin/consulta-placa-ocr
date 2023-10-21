@@ -2,6 +2,7 @@ const consultaPlacaRoute = require('express').Router();
 const placaSchema = require('../models/placaSchema');
 const connectDatabase = require("../utils/connectDatabase");
 
+// Rota para verificar se uma placa está salva no banco de dados
 consultaPlacaRoute.get('/consulta/:placa', async (req, res) => {
     try {
 
