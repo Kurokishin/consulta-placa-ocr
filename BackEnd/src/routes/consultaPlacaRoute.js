@@ -1,14 +1,13 @@
-require('dotenv').config();
 const consultaPlacaRoute = require('express').Router();
-const db = require('mongoose');
 const placaSchema = require('../models/placaSchema');
+const connectDatabase = require("../utils/connectDatabase");
 
+// Rota para verificar se uma placa está salva no banco de dados
 consultaPlacaRoute.get('/consulta/:placa', async (req, res) => {
     try {
 
         // Conexão com banco de dados
-        await db.connect(process.env.DB_CONNECTION)
-            .then(() => console.log('Connected!'));
+        connectDatabase();
 
         const numeroPlaca = req.params.placa;
 

@@ -2,9 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const consultaPlacaRoute = require("./src/routes/consultaPlacaRoute");
-const relatorioPlacaRouter = require("./src/routes/relatorioPlacaRoute");
-const cadastroPlacaRouter = require("./src/routes/cadastroPlacaRoute");
-const cadastroCredencialRouter = require("./src/routes/cadastroCredencial");
+const relatorioPlacaRoute = require("./src/routes/relatorioPlacaRoute");
+const cadastroPlacaRoute = require("./src/routes/cadastroPlacaRoute");
+const cadastroCredencialRoute = require("./src/routes/cadastroCredencialRoute");
 const path = require("path");
 const cors = require("cors");
 
@@ -17,10 +17,10 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "src/public")));
 
 // Usar o placaRouter para rota '/'
-app.use("/", cadastroPlacaRouter);
-app.use("/", relatorioPlacaRouter);
+app.use("/", cadastroPlacaRoute);
+app.use("/", relatorioPlacaRoute);
 app.use("/", consultaPlacaRoute);
-app.use("/", cadastroCredencialRouter);
+app.use("/", cadastroCredencialRoute);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

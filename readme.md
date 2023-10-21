@@ -116,3 +116,11 @@ npm run dev
    ```sh
    curl localhost:3001/consulta/:placa
    ```
+
+* Cadastrar um novo usuário utilizando credenciais (email e senha)
+   ```sh
+  curl -X POST -H "Content-Type: application/json" -d '{
+  "email": "seu_email@email.com",
+  "password": "sua_senha"
+  }' http://localhost:3001/cadastro
+   ```
