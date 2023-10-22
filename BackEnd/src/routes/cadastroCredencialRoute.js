@@ -2,6 +2,7 @@ const cadastroCredencialRouter = require("express").Router();
 const bcrypt = require('bcrypt');
 const credencialSchema = require("../models/credencialSchema");
 const connectDatabase = require("../utils/connectDatabase");
+const checkExistingUser = require("../utils/checkExistingUser");
 
 // Rota POST para cadastrar as credenciais
 cadastroCredencialRouter.post('/cadastro', async (req, res) => {
@@ -13,9 +14,9 @@ cadastroCredencialRouter.post('/cadastro', async (req, res) => {
         const { email, password } = req.body;
 
         // Verifica se o email já existe no banco de dados
-        const existingUser = await credencialSchema.findOne({ email });
+        const existingUser = await checkExistingUser(email);
         if (existingUser) {
-        return res.status(400).json({ message: 'Email já registrado, por favor se cadastre utilizando outro' });
+          return res.status(401).json({ message: 'Já existe um cadastro com esse email, por favor se cadastre utilizando outro' });
         }
 
         // Configura e criptografa a senha do usuário
