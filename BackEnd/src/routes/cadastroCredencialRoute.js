@@ -12,6 +12,12 @@ cadastroCredencialRouter.post('/cadastro', async (req, res) => {
 
         const { email, password } = req.body;
 
+        // Verifica se o email já existe no banco de dados
+        const existingUser = await credencialSchema.findOne({ email });
+        if (existingUser) {
+        return res.status(400).json({ message: 'Email já registrado, por favor se cadastre utilizando outro' });
+        }
+
         // Configura e criptografa a senha do usuário
         const saltRounds = 10;
         const salt = bcrypt.genSaltSync(saltRounds);
