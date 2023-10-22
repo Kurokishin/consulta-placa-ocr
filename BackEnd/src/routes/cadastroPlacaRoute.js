@@ -3,6 +3,7 @@ const multer = require("multer");
 const tesseract = require("tesseract.js");
 const placaSchema = require("../models/placaSchema");
 const connectDatabase = require("../utils/connectDatabase");
+const verifyToken = require("../utils/verifyToken");
 
 // Configurar o multer para lidar com uploads de imagens
 const storage = multer.diskStorage({
@@ -20,10 +21,7 @@ const upload = multer({ storage: storage });
 connectDatabase();
 
 // Rota POST para cadastrar placas
-cadastroPlacaRouter.post(
-  "/cadastroPlaca",
-  upload.single("file"),
-  async (req, res) => {
+cadastroPlacaRouter.post("/cadastroPlaca", upload.single("file"), verifyToken, async (req, res) => {
     try {
       if (!req.file || req.file.mimetype !== "image/png") {
         return res.json({
