@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-//Verificar se a requisição possui token válido, e portanto, o usuário está logado
+// Verificar se a requisição possui token válido, e portanto, o usuário está logado
 const verifyToken = (req, res, next) => {
     const token = req.header('Authorization');
-    console.log('O token é:' + token);
+    //console.log('O token é: ' + token);
 
     if (!token) {
         return res.status(401).json({ logged: false, message: 'Token inválido' });
@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             console.log(err);
-            return res.status(401).json({ logged: false, message: 'Falha na autenticação' });
+            return res.status(401).json({ logged: false, message: 'Falha na autenticação, verifique seu token e tente novamente' });
         }
 
         next();
