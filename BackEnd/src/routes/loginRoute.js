@@ -10,14 +10,12 @@ loginRouter.post('/login', async (req, res) => {
 
         // Verifica se o email existe no banco de dados
         const user = await credencialSchema.findOne({ email });
-
         if (!user) {
             return res.status(401).json({ message: 'Dados incorretos' });
         }
 
         // Verifica se a senha está correta
         const passwordMatch = bcrypt.compareSync(password, user.password);
-
         if (!passwordMatch) {
             return res.status(401).json({ message: 'Dados incorretos' });
         }
