@@ -109,7 +109,7 @@ npm run dev
 
 * Documento com as placas cadastradas de uma determinada cidade (será feito o download do PDF)
    ```sh
-   curl -o <nome_do_arquivo>.pdf localhost:3001/relatorio/cidade/:cidade
+   curl -H "Authorization: <seu_token>" -o <nome_do_arquivo>.pdf localhost:3001/relatorio/cidade/:cidade
    ```
 
 * Para verificar se uma placa está presente no banco de dados
@@ -123,4 +123,12 @@ npm run dev
   "email": "seu_email@email.com",
   "password": "sua_senha"
   }' http://localhost:3001/cadastro
+   ```
+
+* Realizar o login (email e senha) para geração do token
+   ```sh
+   curl -X POST -H "Content-Type: application/json" -d '{
+  "email": "seu_email@email.com",
+  "password": "sua_senha"
+   }' http://localhost:3001/login
    ```
