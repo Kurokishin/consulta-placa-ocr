@@ -14,9 +14,9 @@ cadastroCredencialRouter.post('/cadastro', async (req, res) => {
         const { email, password } = req.body;
 
         // Verifica se o email já existe no banco de dados
-        const existingUser = await checkExistingUser(email, res);
+        const existingUser = await checkExistingUser(email);
         if (existingUser) {
-          return;
+          return res.status(401).json({ message: 'Já existe um cadastro com esse email, por favor se cadastre utilizando outro' });
         }
 
         // Configura e criptografa a senha do usuário
