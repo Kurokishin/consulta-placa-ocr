@@ -4,6 +4,7 @@ const credencialSchema = require("../models/credencialSchema");
 const connectDatabase = require("../utils/connectDatabase");
 const checkExistingUser = require("../utils/checkExistingUser");
 const isEmailValid = require("../utils/isEmailValid");
+const isPasswordValid = require("../utils/isPasswordValid");
 
 // Rota POST para cadastrar as credenciais
 cadastroCredencialRouter.post('/cadastro', async (req, res) => {
@@ -14,9 +15,14 @@ cadastroCredencialRouter.post('/cadastro', async (req, res) => {
 
         const { email, password } = req.body;
 
-        // Verifica se o email é válido usando a função isEmailValid
+        // Verifica se o email é válido
         if (!isEmailValid(email)) {
             return res.status(400).json({ message: 'Formato de email inválido' });
+        }
+
+        // Verifica se a senha é válida
+        if (!isPasswordValid(password)) {
+            return res.status(400).json({ message: 'A senha precisa ter pelo menos: oito caracteres, uma letra maiúscula e minúscula, um caractere especial (ex: @, !, #), e um número' });
         }
 
         // Verifica se o email já existe no banco de dados
