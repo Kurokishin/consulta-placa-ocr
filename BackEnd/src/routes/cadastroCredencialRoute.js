@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const credencialSchema = require("../models/credencialSchema");
 const connectDatabase = require("../utils/connectDatabase");
 const checkExistingUser = require("../utils/checkExistingUser");
+const isEmailValid = require("../utils/isEmailValid");
 
 // Rota POST para cadastrar as credenciais
 cadastroCredencialRouter.post('/cadastro', async (req, res) => {
@@ -12,6 +13,11 @@ cadastroCredencialRouter.post('/cadastro', async (req, res) => {
         connectDatabase();
 
         const { email, password } = req.body;
+
+        // Verifica se o email é válido usando a função isEmailValid
+        if (!isEmailValid(email)) {
+            return res.status(400).json({ message: 'Formato de email inválido' });
+        }
 
         // Verifica se o email já existe no banco de dados
         const existingUser = await checkExistingUser(email);
