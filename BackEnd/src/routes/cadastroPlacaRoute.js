@@ -4,6 +4,7 @@ const tesseract = require("tesseract.js");
 const placaSchema = require("../models/placaSchema");
 const connectDatabase = require("../utils/connectDatabase");
 const verifyToken = require("../utils/verifyToken");
+const capitalizeFirstLetter = require("../utils/capitalizeFirstLetter");
 
 // Configurar o multer para lidar com uploads de imagens
 const storage = multer.diskStorage({
@@ -30,7 +31,8 @@ cadastroPlacaRouter.post("/cadastroPlaca", upload.single("file"), verifyToken, a
         });
       }
 
-      const cidade = req.body.cidade;
+      // Registra o nome da cidade com as iniciais em maiúsculo
+      const cidade = capitalizeFirstLetter(req.body.cidade);
 
       const { data } = await tesseract.recognize(
         `src/uploads/${req.file.filename}`,
