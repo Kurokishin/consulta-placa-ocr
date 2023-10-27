@@ -3,6 +3,7 @@ const PDFDocument = require("pdfkit");
 const placaSchema = require("../models/placaSchema");
 const connectDatabase = require("../utils/connectDatabase");
 const verifyToken = require("../utils/verifyToken");
+const capitalizeFirstLetter = require("../utils/capitalizeFirstLetter");
 
 // Rota para verificar placas cadastradas de uma determinada cidade
 relatorioPlacaRouter.get("/relatorio/cidade/:cidade", verifyToken, async (req, res) => {
@@ -11,7 +12,8 @@ relatorioPlacaRouter.get("/relatorio/cidade/:cidade", verifyToken, async (req, r
     // Conexão com banco de dados
     connectDatabase();
 
-    const cidade = req.params.cidade;
+    // Fazendo a pesquisa com as iniciais em maiúsculo
+    const cidade = capitalizeFirstLetter(req.params.cidade);
 
     // Consulta o MongoDB para obter registros com a cidade especificada
     const placas = await placaSchema.find({ cidade: cidade });
