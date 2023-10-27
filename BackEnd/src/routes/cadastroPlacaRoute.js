@@ -5,6 +5,7 @@ const placaSchema = require("../models/placaSchema");
 const connectDatabase = require("../utils/connectDatabase");
 const verifyToken = require("../utils/verifyToken");
 const capitalizeFirstLetter = require("../utils/capitalizeFirstLetter");
+const unifyPlateCharacters = require("../utils/unifyPlateCharacters");
 
 // Configurar o multer para lidar com uploads de imagens
 const storage = multer.diskStorage({
@@ -42,7 +43,7 @@ cadastroPlacaRouter.post("/cadastroPlaca", upload.single("file"), verifyToken, a
 
       if (data && data.text) {
         // Remove caracteres especiais e qualquer caractere de espaço
-        const numeroPlaca = data.text.replace(/[\s-"“.._]/g, '');
+        const numeroPlaca = unifyPlateCharacters(data.text);
         console.log("\nResultado do OCR:", numeroPlaca);
 
         // Armazena a data e hora atual
