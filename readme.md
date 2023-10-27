@@ -102,21 +102,6 @@ npm run dev
 
 ### Requisições pelo backend
 
-* Para a requisição POST de cadastrar a placa (somente imagens em PNG)
-   ```sh
-   curl -X POST -F "file=@/caminho/para/imagem.png" -F "cidade=<nome_cidade>" localhost:3001/cadastroPlaca
-   ```
-
-* Documento com as placas cadastradas de uma determinada cidade (será feito o download do PDF)
-   ```sh
-   curl -H "Authorization: <seu_token>" -o <nome_do_arquivo>.pdf localhost:3001/relatorio/cidade/:cidade
-   ```
-
-* Para verificar se uma placa está presente no banco de dados
-   ```sh
-   curl localhost:3001/consulta/:placa
-   ```
-
 * Cadastrar um novo usuário utilizando credenciais (email e senha)
    ```sh
   curl -X POST -H "Content-Type: application/json" -d '{
@@ -131,4 +116,24 @@ npm run dev
   "email": "seu_email@email.com",
   "password": "sua_senha"
    }' http://localhost:3001/login
+   ```
+
+* Para a requisição POST de cadastrar a placa (somente imagens em PNG)
+   ```sh
+   curl -H "Authorization: <seu_token>" -X POST -F "file=@/caminho/para/imagem.png" -F "cidade=<nome_cidade>" localhost:3001/cadastroPlaca
+   ```
+
+* Documento com as placas cadastradas de uma determinada cidade (será feito o download do PDF)
+   ```sh
+   curl -H "Authorization: <seu_token>" -o <nome_do_arquivo>.pdf localhost:3001/relatorio/cidade/:cidade
+   ```
+
+* Para verificar se uma placa está presente no banco de dados
+   ```sh
+   curl -H "Authorization: <seu_token>" localhost:3001/consulta/:placa
+   ```
+
+* Caso deseje enviar um alerta para os usuários logados no sistema
+   ```sh
+   curl -H "Authorization: <seu_token>" -X POST localhost:3001/alerta
    ```
