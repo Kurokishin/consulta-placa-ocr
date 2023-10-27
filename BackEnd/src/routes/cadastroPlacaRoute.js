@@ -4,6 +4,8 @@ const tesseract = require("tesseract.js");
 const placaSchema = require("../models/placaSchema");
 const connectDatabase = require("../utils/connectDatabase");
 const verifyToken = require("../utils/verifyToken");
+const capitalizeFirstLetter = require("../utils/capitalizeFirstLetter");
+const unifyPlateCharacters = require("../utils/unifyPlateCharacters");
 
 // Configurar o multer para lidar com uploads de imagens
 const storage = multer.diskStorage({
@@ -30,12 +32,8 @@ cadastroPlacaRouter.post("/cadastroPlaca", upload.single("file"), verifyToken, a
         });
       }
 
-      //await placaSchema.save();
-      //console.log(req.file, req.body);
-
-      const cidade = req.body.cidade;
-      console.log("Request body:", req.body);
-      console.log("Request file:", req.file);
+      // Registra o nome da cidade com as iniciais em maiúsculo
+      const cidade = capitalizeFirstLetter(req.body.cidade);
 
       const { data } = await tesseract.recognize(
         `src/uploads/${req.file.filename}`,
@@ -44,19 +42,17 @@ cadastroPlacaRouter.post("/cadastroPlaca", upload.single("file"), verifyToken, a
       );
 
       if (data && data.text) {
-        const text = data.text.trim();
-        console.log("Resultado do OCR:", text);
+        // Remove caracteres especiais e qualquer caractere de espaço
+        const numeroPlaca = unifyPlateCharacters(data.text);
+        console.log("\nResultado do OCR:", numeroPlaca);
 
-        const numeroPlaca = text;
-
-        // Armazenar a data e hora atual
+        // Armazena a data e hora atual
         const dataHora = new Date();
 
-        // Criar e salvar o documento no MongoDB
+        // Cria e salva o documento no MongoDB
         await placaSchema.create({ numeroPlaca, cidade, dataHora });
 
-        res.json({ mensagem: "Cadastro realizado" });
-        // Continuar com o processamento, armazenamento no banco de dados, etc.
+        res.json({ mensagem: "Cadastro de placa realizado" });
       } else {
         console.error("Nenhum texto reconhecido pelo OCR.");
         res.json({
@@ -67,7 +63,7 @@ cadastroPlacaRouter.post("/cadastroPlaca", upload.single("file"), verifyToken, a
       }
     } catch (error) {
       console.error(error);
-      res.json({ error: true, mensagem: "Erro durante o cadastro" });
+      res.json({ error: true, mensagem: "Erro durante o cadastro da placa" });
     }
   }
 );
