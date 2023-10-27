@@ -18,6 +18,11 @@ relatorioPlacaRouter.get("/relatorio/cidade/:cidade", verifyToken, async (req, r
     // Consulta o MongoDB para obter registros com a cidade especificada
     const placas = await placaSchema.find({ cidade: cidade });
 
+    // Verifica se a cidade procura está registrada no banco de dados
+    if (!placas || placas.length === 0) {
+      return res.status(400).json({message: "Cidade inválida"});
+    }
+
     // Cria um novo documento PDF
     const doc = new PDFDocument();
 
