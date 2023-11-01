@@ -1,60 +1,73 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Styles from "./styles.module.css";
 import { Link } from "react-router-dom";
+import { useSaveData } from "../../hooks/use-saveDate";
 
-import Styles from "../Relatorio-Placa/styles.module.css";
+const LoginUsuario = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const RelatorioPlaca = () => {
-  const [data, setData] = useState(null);
-  const [selectedCity, setSelectedCity] = useState("");
+  const [message, setMenssage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [isCadastroSucesso, setIsCadastroSucesso] = useState(false);
 
-  useEffect(() => {
-    fetch("http://localhost:3000/cidades")
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setSelectedCity(data[0]?.cidade);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+  const { data, setData, saveData } = useSaveData(
+    "http://localhost:3000/cidades"
+  );
 
-  // Função para lidar com a mudança na seleção da cidade
-  const handleCityChange = (event) => {
-    setSelectedCity(event.target.value);
-  };
+  // Função para lidar com a submissão do formulário
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleButtonClick = () => {
-    window.open(
-      `http://localhost:3001/relatorio/cidade/${selectedCity}`,
-      "_blank"
-    );
+    const emailExists = await checkEmail(email);
+    if (emailExists) {
+      console.log("Já existe um cadastro com esse email");
+      return;
+    }
+
+    // Continuar com o cadastro...
+    const response = await fetch("http://localhost:3001/cadastro", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+    if (data.message) {
+      console.log(data.message);
+    } else {
+      console.error("Erro no cadastro");
+    }
   };
 
   return (
     <div className={Styles.body}>
-      <div className={Styles.form}>
-        <h1>Relatório por Cidade</h1>
-        <br></br>
-        <select onChange={handleCityChange}>
-          {data?.map((item) => (
-            <option key={item.id} value={item.cidade}>
-              {item.cidade}
-            </option>
-          ))}
-        </select>
-        <br></br>
+      <div className={isError ? Styles.error_message : Styles.message}>
+        <p>{message}</p>
+      </div>
+      <h1>Login de Usuário</h1>
+      <br></br>
+      <form onSubmit={handleSubmit}>
+        <label>Informe o seu email</label>
+        <input type="email" onChange={(e) => setEmail(e.target.value)} />
+        <br />
+
+        <label>Informe o seu login</label>
+        <input type="password" onChange={(e) => setPassword(e.target.value)} />
+        <br />
 
         <div className={Styles.buttons}>
-          <button type="submit" onClick={handleButtonClick}>
-            Gerar Relatório
-          </button>
-
-          <Link to={"/"}>
-            <button>Voltar</button>
-          </Link>
+          <button type="submit">Login</button>
         </div>
-      </div>
+
+        <Link to={"/consulta"}>
+          <button>Cadastro</button>
+        </Link>
+      </form>
     </div>
   );
 };
 
-export default RelatorioPlaca;
+export default LoginUsuario;
