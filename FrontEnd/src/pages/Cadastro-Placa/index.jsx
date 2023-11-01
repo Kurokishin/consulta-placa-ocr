@@ -30,7 +30,12 @@ const CadastroPlaca = () => {
       try {
         const response = await axios.post(
           "http://localhost:3001/cadastroPlaca",
-          formData
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         resolve(response.data);
       } catch (error) {

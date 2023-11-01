@@ -11,7 +11,12 @@ function ConsultaPlaca() {
   const consultarPlaca = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/consulta/${placa}`
+        `http://localhost:3001/consulta/${placa}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       const { mensagem, existe } = response.data;
 

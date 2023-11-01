@@ -1,60 +1,64 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import Styles from "./styles.module.css";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-import Styles from "../Relatorio-Placa/styles.module.css";
+const LoginUsuario = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const RelatorioPlaca = () => {
-  const [data, setData] = useState(null);
-  const [selectedCity, setSelectedCity] = useState("");
+  const [message, setMenssage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [isCadastroSucesso, setIsCadastroSucesso] = useState(false);
 
-  useEffect(() => {
-    fetch("http://localhost:3000/cidades")
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setSelectedCity(data[0]?.cidade);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+  const navigate = useNavigate();
 
-  // Função para lidar com a mudança na seleção da cidade
-  const handleCityChange = (event) => {
-    setSelectedCity(event.target.value);
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleButtonClick = () => {
-    window.open(
-      `http://localhost:3001/relatorio/cidade/${selectedCity}`,
-      "_blank"
-    );
+    try {
+      const response = await axios.post("http://localhost:3001/login", {
+        email,
+        password,
+      });
+
+      if (response.data.logged) {
+        localStorage.setItem("token", response.data.token);
+        navigate("/cadadastroPlaca");
+      } else {
+        console.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Erro no login", error);
+    }
   };
 
   return (
     <div className={Styles.body}>
-      <div className={Styles.form}>
-        <h1>Relatório por Cidade</h1>
-        <br></br>
-        <select onChange={handleCityChange}>
-          {data?.map((item) => (
-            <option key={item.id} value={item.cidade}>
-              {item.cidade}
-            </option>
-          ))}
-        </select>
-        <br></br>
+      <div className={isError ? Styles.error_message : Styles.message}>
+        <p>{message}</p>
+      </div>
+      <h1>Login de Usuário</h1>
+      <br></br>
+      <form onSubmit={handleSubmit}>
+        <label>Informe o seu email</label>
+        <input type="email" onChange={(e) => setEmail(e.target.value)} />
+        <br />
+
+        <label>Informe a sua senha</label>
+        <input type="password" onChange={(e) => setPassword(e.target.value)} />
+        <br />
 
         <div className={Styles.buttons}>
-          <button type="submit" onClick={handleButtonClick}>
-            Gerar Relatório
-          </button>
-
-          <Link to={"/"}>
-            <button>Voltar</button>
-          </Link>
+          <button type="submit">Login</button>
         </div>
-      </div>
+
+        <Link to={"/cadastroUsuario"}>
+          <button>Cadastro</button>
+        </Link>
+      </form>
     </div>
   );
 };
 
-export default RelatorioPlaca;
+export default LoginUsuario;
