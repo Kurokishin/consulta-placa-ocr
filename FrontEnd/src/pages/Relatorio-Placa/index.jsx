@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import Styles from "../Relatorio-Placa/styles.module.css";
 
@@ -23,10 +24,22 @@ const RelatorioPlaca = () => {
   };
 
   const handleButtonClick = () => {
-    window.open(
-      `http://localhost:3001/relatorio/cidade/${selectedCity}`,
-      "_blank"
-    );
+    axios
+      .get(`http://localhost:3001/relatorio/cidade/${selectedCity}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        responseType: "blob", // Indica que a resposta será um blob
+      })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "file.pdf"); // ou qualquer outro nome de arquivo
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((error) => console.error(error));
   };
 
   return (

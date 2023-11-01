@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Styles from "./styles.module.css";
-import { Link } from "react-router-dom";
-import { useSaveData } from "../../hooks/use-saveDate";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginUsuario = () => {
   const [email, setEmail] = useState("");
@@ -11,34 +11,25 @@ const LoginUsuario = () => {
   const [isError, setIsError] = useState(false);
   const [isCadastroSucesso, setIsCadastroSucesso] = useState(false);
 
-  const { data, setData, saveData } = useSaveData(
-    "http://localhost:3000/cidades"
-  );
+  const navigate = useNavigate();
 
-  // Função para lidar com a submissão do formulário
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const emailExists = await checkEmail(email);
-    if (emailExists) {
-      console.log("Já existe um cadastro com esse email");
-      return;
-    }
+    try {
+      const response = await axios.post("http://localhost:3001/login", {
+        email,
+        password,
+      });
 
-    // Continuar com o cadastro...
-    const response = await fetch("http://localhost:3001/cadastro", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-    if (data.message) {
-      console.log(data.message);
-    } else {
-      console.error("Erro no cadastro");
+      if (response.data.logged) {
+        localStorage.setItem("token", response.data.token);
+        navigate("/cadadastroPlaca");
+      } else {
+        console.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Erro no login", error);
     }
   };
 
@@ -54,7 +45,7 @@ const LoginUsuario = () => {
         <input type="email" onChange={(e) => setEmail(e.target.value)} />
         <br />
 
-        <label>Informe o seu login</label>
+        <label>Informe a sua senha</label>
         <input type="password" onChange={(e) => setPassword(e.target.value)} />
         <br />
 
@@ -62,7 +53,7 @@ const LoginUsuario = () => {
           <button type="submit">Login</button>
         </div>
 
-        <Link to={"/consulta"}>
+        <Link to={"/cadastroUsuario"}>
           <button>Cadastro</button>
         </Link>
       </form>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Styles from "./styles.module.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
@@ -47,6 +47,11 @@ const CadastroUsuario = () => {
         <br />
 
         <button type="submit">Cadastrar</button>
+        <br />
+
+        <Link to={"/"}>
+          <button>Voltar</button>
+        </Link>
       </form>
     </div>
   );
