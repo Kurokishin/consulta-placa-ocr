@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Styles from "../Cadastro-Placa/styles.module.css";
 import { Link } from "react-router-dom";
@@ -11,6 +11,8 @@ const CadastroPlaca = () => {
   const [message, setMenssage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isCadastroSucesso, setIsCadastroSucesso] = useState(false);
+
+  const formRef = useRef();
 
   const { data, setData, saveData } = useSaveData(
     "http://localhost:3000/cidades"
@@ -49,16 +51,51 @@ const CadastroPlaca = () => {
     e.preventDefault();
     try {
       await handleSubmit();
-      setIsError(false); // Não é um erro
+      setIsError(false);
       setMenssage("Cadastro realizado com sucesso");
-      setIsCadastroSucesso(true); // Ativa os botões
+      setIsCadastroSucesso(true);
+
+      setFile(null);
+      setCidade("");
+
+      const response = await axios.get("http://localhost:3000/cidades");
+      const cidadeExiste = response.data.some(
+        (cidade) =>
+          cidade.cidade.trim().toLowerCase() ===
+          data.cidade.trim().toLowerCase()
+      );
+
+      if (!cidadeExiste) {
+        saveData();
+      }
+
+      formRef.current.reset();
     } catch (error) {
-      setIsError(true); // É um erro
+      setIsError(true);
       setMenssage("Erro durante o cadastro");
-    } finally {
-      saveData();
     }
   };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/cidades")
+      .then(function (response) {
+        if (response.data.length > 0) {
+          setIsCadastroSucesso(true);
+        } else {
+          setIsCadastroSucesso(false);
+        }
+      })
+      .catch(function (error) {
+        setIsCadastroSucesso(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMenssage("");
+    }, 2000);
+  }, [message]);
 
   return (
     <div className={Styles.body}>
@@ -67,7 +104,7 @@ const CadastroPlaca = () => {
       </div>
       <h1>Envio de Placa</h1>
       <br></br>
-      <form onSubmit={combinedFormSubmissionHandler}>
+      <form ref={formRef} onSubmit={combinedFormSubmissionHandler}>
         <label htmlFor="file">Imagem da Placa (PNG apenas):</label>
         <input
           type="file"
@@ -82,6 +119,10 @@ const CadastroPlaca = () => {
 
         <div className={Styles.buttons}>
           <button type="submit">Enviar</button>
+
+          <Link to={"/"}>
+            <button>Sair</button>
+          </Link>
         </div>
       </form>
 

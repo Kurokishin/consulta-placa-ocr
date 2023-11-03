@@ -1,37 +1,26 @@
-/* Reset de estilos para o corpo da página */
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Estilos para o corpo da página */
-body {
+.body {
   font-family: "Roboto", sans-serif;
   height: 100vh;
-  /* 100% da altura da tela */
   display: flex;
   flex-direction: column;
-  /* Para empilhar os elementos verticalmente */
   justify-content: center;
-  /* Centraliza verticalmente */
   align-items: center;
-  /* Centraliza horizontalmente */
   margin: 0;
   background-color: #f0f0f0;
-  /* Cor de fundo da página */
 }
 
-/* Estilos para o título */
 h1 {
   color: #333;
   font-size: 24px;
   text-align: center;
   margin-bottom: 20px;
-  /* Espaçamento inferior para separar do formulário */
 }
-
-/* Estilos para o formulário */
 
 form {
   display: flex;
@@ -66,7 +55,6 @@ button {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-  /* Efeito de transição */
 }
 
 .buttons {
