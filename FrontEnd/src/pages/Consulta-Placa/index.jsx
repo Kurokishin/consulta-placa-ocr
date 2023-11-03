@@ -42,7 +42,7 @@ function ConsultaPlaca() {
         <div>
           <button onClick={consultarPlaca}>Consultar</button>
 
-          <Link to={"/"}>
+          <Link to={"/cadastroPlaca"}>
             <button className={styles.buttons}>Voltar</button>
           </Link>
         </div>

@@ -61,7 +61,7 @@ const RelatorioPlaca = () => {
             Gerar Relatório
           </button>
 
-          <Link to={"/"}>
+          <Link to={"/cadastroPlaca"}>
             <button>Voltar</button>
           </Link>
         </div>
