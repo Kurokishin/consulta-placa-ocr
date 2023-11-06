@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import socketIOClient from 'socket.io-client';
-import styles from './styles.module.css';
+import socketIOClient from "socket.io-client";
+import styles from "./styles.module.css";
 
 const Alerta = () => {
-  const [alertMessage, setAlertMessage] = useState('');
-  const socket = socketIOClient('http://localhost:5870');
+  const [alertMessage, setAlertMessage] = useState("");
+  const socket = socketIOClient("http://localhost:5870");
 
   useEffect(() => {
-    socket.on('alerta', (mensagem) => {
+    socket.on("alerta", (mensagem) => {
       setAlertMessage(mensagem);
     });
 
@@ -17,13 +17,14 @@ const Alerta = () => {
   }, [socket]);
 
   const enviarAlerta = async () => {
-    const mensagem = 'Inconsistência de dados ou equipamentos foram detectados no sistema';
+    const mensagem =
+      "Inconsistência de dados ou equipamentos foram detectados no sistema";
 
     try {
-      const response = await fetch('http://localhost:5870/alerta', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5870/alerta", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ mensagem }),
       });
@@ -32,10 +33,10 @@ const Alerta = () => {
         const responseData = await response.json();
         console.log(responseData);
       } else {
-        console.error('Falha ao enviar alerta');
+        console.error("Falha ao enviar alerta");
       }
     } catch (error) {
-      console.error('Erro ao enviar alerta:', error);
+      console.error("Erro ao enviar alerta:", error);
     }
   };
 
