@@ -11,11 +11,25 @@ const path = require("path");
 const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
-app.use(cors({ origin: "https://consulta-placa-ocr.vercel.app" }));
 
 app.use(express.json());
 
-// // Servir arquivos estáticos
+// Configurando CORS manualmente
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://consulta-placa-ocr.vercel.app");
+  // Outros cabeçalhos CORS
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", true);
+
+  if (req.method === "OPTIONS") {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
+// Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, "src/public")));
 
 // Usar o placaRouter para rota '/'
