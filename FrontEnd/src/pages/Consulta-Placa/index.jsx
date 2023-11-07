@@ -11,7 +11,7 @@ function ConsultaPlaca() {
   const consultarPlaca = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/consulta/${placa}`,
+        `https://consulta-placa-ocr.vercel.app/consulta/${placa}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

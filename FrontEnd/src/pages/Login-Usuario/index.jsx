@@ -16,7 +16,7 @@ const LoginUsuario = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/login", {
+      const response = await axios.post("https://consulta-placa-ocr.vercel.app/login", {
         email,
         password,
       });

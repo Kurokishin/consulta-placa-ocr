@@ -17,7 +17,7 @@ const CadastroUsuario = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3001/cadastro", {
+      const response = await axios.post("https://consulta-placa-ocr.vercel.app/cadastro", {
         email,
         password,
       });

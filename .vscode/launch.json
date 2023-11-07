@@ -8,7 +8,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Iniciar o Chrome em relação a localhost",
-      "url": "http://localhost:5173/cadastroUsuario",
+      "url": "https://consulta-placa-ocr.vercel.app/cadastroUsuario",
       "webRoot": "${workspaceFolder}"
     }
   ]

@@ -11,7 +11,7 @@ const path = require("path");
 const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "https://consulta-placa-ocr.vercel.app" }));
 
 app.use(express.json());
 

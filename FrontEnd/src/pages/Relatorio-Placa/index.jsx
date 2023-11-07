@@ -9,7 +9,7 @@ const RelatorioPlaca = () => {
   const [selectedCity, setSelectedCity] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/cidades")
+    fetch("https://consulta-placa-ocr.vercel.app/cidades")
       .then((response) => response.json())
       .then((data) => {
         setData(data);
@@ -25,7 +25,7 @@ const RelatorioPlaca = () => {
 
   const handleButtonClick = () => {
     axios
-      .get(`http://localhost:3001/relatorio/cidade/${selectedCity}`, {
+      .get(`https://consulta-placa-ocr.vercel.app/relatorio/cidade/${selectedCity}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

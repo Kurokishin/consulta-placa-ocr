@@ -15,7 +15,7 @@ const CadastroPlaca = () => {
   const formRef = useRef();
 
   const { data, setData, saveData } = useSaveData(
-    "http://localhost:3000/cidades"
+    "https://consulta-placa-ocr.vercel.app/cidades"
   );
 
   const combinedJobChangeHandler = (e) => {
@@ -31,7 +31,7 @@ const CadastroPlaca = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:3001/cadastroPlaca",
+          "https://consulta-placa-ocr.vercel.app/cadastroPlaca",
           formData,
           {
             headers: {
@@ -58,7 +58,7 @@ const CadastroPlaca = () => {
       setFile(null);
       setCidade("");
 
-      const response = await axios.get("http://localhost:3000/cidades");
+      const response = await axios.get("https://consulta-placa-ocr.vercel.app/cidades");
       const cidadeExiste = response.data.some(
         (cidade) =>
           cidade.cidade.trim().toLowerCase() ===
@@ -78,7 +78,7 @@ const CadastroPlaca = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/cidades")
+      .get("https://consulta-placa-ocr.vercel.app/cidades")
       .then(function (response) {
         if (response.data.length > 0) {
           setIsCadastroSucesso(true);
