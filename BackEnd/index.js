@@ -12,6 +12,7 @@ const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
 
+// Divide o JSON da request e coloca no req.body
 app.use(express.json());
 
 // Configurando CORS manualmente
@@ -32,7 +33,7 @@ app.use((req, res, next) => {
 // Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, "src/public")));
 
-// Usar o placaRouter para rota '/'
+// Caminho padrão para as rotas
 app.use("/", cadastroPlacaRoute);
 app.use("/", relatorioPlacaRoute);
 app.use("/", consultaPlacaRoute);

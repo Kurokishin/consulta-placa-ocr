@@ -11,7 +11,7 @@ export const RouteList = () => {
     <Routes>
       <Route path="/" element={<LoginUsuario />} />
       <Route path="/cadastroUsuario" element={<CadastroUsuario />} />
-      <Route path="/cadadastroPlaca" element={<CadastroPlaca />} />
+      <Route path="/cadastroPlaca" element={<CadastroPlaca />} />
       <Route path="/relatorio" element={<RelatorioPlaca />} />
       <Route path="/consulta" element={<ConsultaPlaca />} />
       <Route path="/alerta" element={<Alerta />} />
