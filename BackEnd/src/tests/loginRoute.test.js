@@ -2,14 +2,14 @@ const request = require("supertest");
 const express = require("express");
 const app = express();
 const sinon = require("sinon");
-const loginRouter = require("../routes/loginRoute");
+const loginRoute = require("../routes/loginRoute");
 const credencialSchema = require("../models/credencialSchema");
 
 // Divide o JSON da request e coloca no req.body
 app.use(express.json());
 
 //Caminho padrão para a rota
-app.use("/", loginRouter);
+app.use("/", loginRoute);
 
 // Função para criar um stub para credencialSchema.findOne()
 function createFindOneStub(email, user) {
