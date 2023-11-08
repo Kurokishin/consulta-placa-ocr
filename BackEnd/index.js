@@ -13,12 +13,13 @@ const cors = require("cors");
 const PORT = process.env.PORT || 3001;
 app.use(cors({ origin: "http://localhost:5173" }));
 
+// Divide o JSON da request e coloca no req.body
 app.use(express.json());
 
 // // Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, "src/public")));
 
-// Usar o placaRouter para rota '/'
+// Caminho padrão para as rotas
 app.use("/", cadastroPlacaRoute);
 app.use("/", relatorioPlacaRoute);
 app.use("/", consultaPlacaRoute);

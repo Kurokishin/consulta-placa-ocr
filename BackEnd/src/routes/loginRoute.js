@@ -1,9 +1,8 @@
+require("dotenv").config();
 const loginRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const credencialSchema = require("../models/credencialSchema");
-
-require("dotenv").config();
 
 // Verifica se o email e senha são os mesmos do banco de dados e retorna um token para o usuário
 loginRouter.post("/login", async (req, res) => {
