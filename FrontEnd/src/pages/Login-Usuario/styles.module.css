@@ -126,3 +126,16 @@ input[type="submit"]:active {
   display: block;
   text-decoration: none;
 }
+
+.divTemp {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  border: 2px solid rgb(27, 209, 27);
+  border-radius: 15px;
+  width: 150px;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}

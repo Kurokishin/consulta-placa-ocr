@@ -128,7 +128,7 @@ const CadastroPlaca = () => {
 
       <div className={Styles.containerButtons}>
         <Link to={"/consulta"}>
-          <button>Consultar Placas</button>
+          <button>Consultar </button>
         </Link>
 
         <Link

@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Styles from "./styles.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+const API_URL_TEMP = "https://api.thingspeak.com/channels/2374597/field/1.json";
+const API_URL_UMI = "https://api.thingspeak.com/channels/2374597/field/2.json";
 
 const LoginUsuario = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +12,9 @@ const LoginUsuario = () => {
 
   const [message, setMenssage] = useState("");
   const [isError, setIsError] = useState(false);
+
+  const [tempData, setTempData] = useState(null);
+  const [umiData, setUmiData] = useState(null);
 
   const navigate = useNavigate();
 
@@ -43,6 +49,29 @@ const LoginUsuario = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const tempResponse = await fetch(API_URL_TEMP);
+        const tempData = await tempResponse.json();
+        const lastTempEntry = tempData.feeds[tempData.feeds.length - 1];
+        setTempData(lastTempEntry);
+
+        const umiResponse = await fetch(API_URL_UMI);
+        const umiData = await umiResponse.json();
+        const lastUmiEntry = umiData.feeds[umiData.feeds.length - 1];
+        setUmiData(lastUmiEntry);
+      } catch (error) {
+        console.error("Erro ao buscar dados das APIs:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log("tempData", tempData);
+  console.log("umiData", umiData);
+
   return (
     <div className={Styles.body}>
       <div className={isError ? Styles.error_message : Styles.message}>
@@ -50,6 +79,21 @@ const LoginUsuario = () => {
       </div>
       <h1>Login de Usuário</h1>
       <br></br>
+
+      <div className={Styles.divTemp}>
+        {tempData && (
+          <div>
+            <p>Temperatura: {parseFloat(tempData.field1).toFixed(2)}</p>
+          </div>
+        )}
+
+        {umiData && (
+          <div>
+            <p>Umidade: {parseFloat(umiData.field2).toFixed(2)}</p>
+          </div>
+        )}
+      </div>
+
       <form onSubmit={handleSubmit}>
         <label>Informe o seu email</label>
         <input type="email" onChange={(e) => setEmail(e.target.value)} />
